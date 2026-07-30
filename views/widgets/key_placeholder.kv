@@ -1,0 +1,100 @@
+<KeyPlaceholder@Button>:
+    # Данные ячейки
+    room_name: ''         # Помещение
+    issued_to: ''         # Кому выдан ключ (если пусто — свободно)
+    issued_at: ''         # Когда выдан ключ (строка, если пусто — не показываем)
+    key_code: ''          # Код ключа для связи с БД (например, 'K-101')
+    show_issued_prefix: True  # Показать префикс "Кому выдан:" (для админ-сетки выключаем)
+    # Админ-контролы и состояние доступа
+    show_admin_controls: False
+    allowed: False
+    use_state_colors: True
+
+    size_hint: None, None
+    # Размер задаётся контроллером; эти значения используются как стартовые
+    size: dp(88), dp(56)
+    background_normal: ''
+    background_down: ''
+    background_color: 0.22, 0.24, 0.28, 1
+    color: 1, 1, 1, 1
+    text: ''
+
+    canvas.before:
+        Color:
+            rgba: (self.background_color if root.use_state_colors else (1, 1, 1, 1))
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [12, 12, 12, 12]
+        Color:
+            rgba: (1, 1, 1, 0.10) if not root.use_state_colors else (1, 1, 1, 0.06)
+        RoundedRectangle:
+            pos: self.x, self.y
+            size: self.width, self.height
+            radius: [12, 12, 12, 12]
+
+    # Центрируем контент внутри кнопки по вертикали и горизонтали
+    AnchorLayout:
+        size_hint: None, None
+        size: root.size
+        pos: root.pos
+        anchor_x: 'center'
+        anchor_y: 'center'
+
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint: None, None
+            size: root.size
+            padding: dp(12)
+            spacing: dp(8)
+
+            BoxLayout:
+                orientation: 'vertical'
+                size_hint_x: 1
+                spacing: dp(2)
+                MDLabel:
+                    text: root.room_name if root.room_name else ''
+                    font_style: 'Body1'
+                    theme_text_color: 'Primary'
+                    halign: 'left'
+                    valign: 'middle'
+                    size_hint_y: None
+                    height: self.texture_size[1]
+                MDLabel:
+                    text: ((('Кому выдан: ' + root.issued_to) if root.issued_to else 'Свободно') if root.show_issued_prefix else (root.issued_to if root.issued_to else ''))
+                    font_style: 'Caption'
+                    theme_text_color: 'Secondary'
+                    halign: 'left'
+                    valign: 'middle'
+                    size_hint_y: None
+                    height: self.texture_size[1]
+                MDLabel:
+                    text: ('Выдан: ' + root.issued_at) if root.issued_at else ''
+                    font_style: 'Caption'
+                    theme_text_color: 'Secondary'
+                    halign: 'left'
+                    valign: 'middle'
+                    size_hint_y: None
+                    height: self.texture_size[1]
+
+            MDIcon:
+                icon: 'close'
+                theme_text_color: 'Custom'
+                text_color: 1, 0.25, 0.25, 1
+                size_hint: None, None
+                size: dp(20), dp(20)
+                opacity: 1 if (root.show_admin_controls and not root.allowed) else 0
+                disabled: not root.show_admin_controls
+                pos_hint: {'center_y': 0.5}
+
+            MDSwitch:
+                size_hint: None, None
+                size: dp(36), dp(20)
+                pos_hint: {'center_y': 0.5}
+                active: root.allowed
+                opacity: 1 if root.show_admin_controls else 0
+                disabled: not root.show_admin_controls
+                on_active: app.controller.on_admin_switch(root, self.active)
+
+
+

@@ -1,0 +1,25 @@
+# Шаблон systemd-юнита для автозапуска UserApp (не устанавливается автоматически).
+# GUI-приложение: нужна активная графическая сессия и переменная DISPLAY у пользователя.
+# Перед использованием замените __USER__, __REPO_ROOT__ и при необходимости путь к config.deploy.cfg.
+#
+# Пример установки:
+#   sudo cp deploy/systemd/keyholder-user.service /etc/systemd/system/
+#   sudo systemctl daemon-reload
+#   sudo systemctl enable --now keyholder-user.service
+
+[Unit]
+Description=KeyHolder UserApp
+After=network.target
+
+[Service]
+Type=simple
+User=__USER__
+WorkingDirectory=__REPO_ROOT__/dist/UserApp
+Environment=KIVY_LOG_LEVEL=info
+# Environment=DISPLAY=:0
+ExecStart=__REPO_ROOT__/deploy/run_user.sh
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,48 @@
+<AdminRegisterUserRfidScreen@Screen>:
+    AdminPage:
+        AdminScreenTitle:
+            text: 'Привязка RFID пользователя'
+
+        AdminScrollBody:
+            BoxLayout:
+                orientation: 'vertical'
+                size_hint_y: None
+                height: form_card.height + dp(16)
+                size_hint_x: 1
+                padding: 0, dp(8)
+
+                AdminCenteredForm:
+                    height: form_card.height
+
+                    AdminFormCard:
+                        id: form_card
+                        width: min(root.width - dp(32), dp(480))
+                        height: form_body.minimum_height + dp(48)
+
+                        AdminFormBody:
+                            id: form_body
+                            padding: dp(8), dp(16)
+
+                            MDLabel:
+                                id: user_rfid_prompt
+                                text: 'Приложите RFID-метку к считывателю.'
+                                font_style: 'H6'
+                                theme_text_color: 'Primary'
+                                halign: 'center'
+                                text_size: self.width, None
+                                size_hint_y: None
+                                height: self.texture_size[1] + dp(8)
+
+                            AdminStatusLabel:
+                                id: user_rfid_status
+                                text: ''
+                                halign: 'center'
+                                size_hint_y: None
+                                height: dp(28)
+
+                            AdminActionsFooter:
+                                AdminFormGhostButton:
+                                    text: 'Пропустить'
+                                    on_release: app.controller.admin_cancel_user_rfid_bind()
+                                AdminFormBackButton:
+                                    on_release: app.controller.admin_cancel_user_rfid_bind()

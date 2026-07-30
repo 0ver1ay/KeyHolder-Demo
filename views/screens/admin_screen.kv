@@ -1,0 +1,16 @@
+<AdminScreen@Screen>:
+    BoxLayout:
+        orientation: 'vertical'
+        spacing: dp(12)
+        padding: dp(16)
+
+        Label:
+            text: 'Эта страница больше не используется. Перейдите в меню админки.'
+            color: 1, 1, 1, 1
+            size_hint_y: None
+            height: dp(36)
+        PrimaryButton:
+            text: 'Открыть меню админки'
+            on_release: app.root.current = 'admin_menu'
+
+

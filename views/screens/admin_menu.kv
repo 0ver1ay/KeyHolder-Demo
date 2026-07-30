@@ -1,0 +1,216 @@
+<HoverArea@HoverBehavior+Widget>:
+
+<MenuTile>:
+    padding: dp(20)
+    radius: [28]
+    size_hint: None, None
+    size: dp(320), dp(118)
+    RelativeLayout:
+        size_hint: 1, 1
+        BoxLayout:
+            size_hint: 1, 1
+            spacing: dp(12)
+            AnchorLayout:
+                size_hint: None, 1
+                width: dp(52)
+                anchor_y: 'center'
+                MDIcon:
+                    icon: root.icon_name
+                    theme_text_color: 'Custom'
+                    text_color: 0.06, 0.06, 0.07, 1
+                    font_size: sp(44)
+                    size_hint: None, None
+                    size: dp(48), dp(48)
+            AnchorLayout:
+                size_hint_x: 1
+                anchor_y: 'center'
+                BoxLayout:
+                    orientation: 'vertical'
+                    size_hint_y: None
+                    height: self.minimum_height
+                    spacing: dp(4)
+                    padding: 0, dp(2), 0, 0
+                    MDLabel:
+                        text: root.title
+                        font_style: 'Body1'
+                        bold: True
+                        theme_text_color: 'Primary'
+                        size_hint_y: None
+                        halign: 'left'
+                        text_size: self.width, None
+                        height: self.texture_size[1]
+                    MDLabel:
+                        text: root.subtitle
+                        font_style: 'Caption'
+                        theme_text_color: 'Secondary'
+                        size_hint_y: None
+                        halign: 'left'
+                        text_size: self.width, None
+                        height: self.texture_size[1]
+        HoverArea:
+            size_hint: 1, 1
+            on_enter: root.md_bg_color = root.hover_color
+            on_leave: root.md_bg_color = root.normal_color
+
+<AdminMenuScreen@Screen>:
+    AdminPage:
+        AdminScreenTitle:
+            text: 'Админ-панель'
+
+        AdminScrollBody:
+            scroll_distance: dp(24)
+            scroll_timeout: 300
+            bar_inactive_color: 0, 0, 0, 0
+            bar_color: 0.5, 0.5, 0.5, 0.4
+
+            BoxLayout:
+                orientation: 'vertical'
+                size_hint_y: None
+                height: admin_card.height + dp(16)
+                size_hint_x: 1
+                padding: 0, dp(8)
+
+                AdminCenteredForm:
+                    height: admin_card.height
+
+                    AdminMenuCard:
+                        id: admin_card
+                        width: min(root.width - dp(32), dp(1650))
+                        height: menu_grid.rows_count * dp(118) + max(0, menu_grid.rows_count - 1) * menu_grid.spacing[1] + dp(32)
+
+                        AnchorLayout:
+                            anchor_x: 'center'
+                            size_hint: 1, 1
+
+                            AdminMenuGrid:
+                                id: menu_grid
+                                cols: 3
+                                adaptive_height: True
+                                adaptive_width: False
+                                size_hint_x: 1
+                                spacing: dp(24)
+                                MenuTile:
+                                    size_hint: None, None
+                                    width: int((menu_grid.width - menu_grid.spacing[0] * (menu_grid.cols - 1)) / menu_grid.cols)
+                                    height: dp(118)
+                                    title: 'Создать пользователя'
+                                    subtitle: 'Добавить нового пользователя в систему'
+                                    icon_name: 'account-plus'
+                                    on_release: app.controller.admin_open_add_user()
+
+                                MenuTile:
+                                    size_hint: None, None
+                                    width: int((menu_grid.width - menu_grid.spacing[0] * (menu_grid.cols - 1)) / menu_grid.cols)
+                                    height: dp(118)
+                                    title: 'Переназначить RFID'
+                                    subtitle: 'Привязать/сменить метку пользователя'
+                                    icon_name: 'account-edit'
+                                    on_release: app.controller.admin_open_reassign_user_rfid()
+
+                                MenuTile:
+                                    size_hint: None, None
+                                    width: int((menu_grid.width - menu_grid.spacing[0] * (menu_grid.cols - 1)) / menu_grid.cols)
+                                    height: dp(118)
+                                    title: 'Выдача привилегий'
+                                    subtitle: 'Назначить доступ пользователям'
+                                    icon_name: 'account-key'
+                                    on_release: app.controller.admin_open_permissions()
+
+                                MenuTile:
+                                    size_hint: None, None
+                                    width: int((menu_grid.width - menu_grid.spacing[0] * (menu_grid.cols - 1)) / menu_grid.cols)
+                                    height: dp(118)
+                                    title: 'Создать помещение/ключ'
+                                    subtitle: 'Добавить локацию/кабинет'
+                                    icon_name: 'home-plus'
+                                    on_release: app.controller.admin_open_add_room()
+
+                                MenuTile:
+                                    size_hint: None, None
+                                    width: int((menu_grid.width - menu_grid.spacing[0] * (menu_grid.cols - 1)) / menu_grid.cols)
+                                    height: dp(118)
+                                    title: 'Создать бокс'
+                                    subtitle: 'Добавить новый бокс'
+                                    icon_name: 'archive-plus'
+                                    on_release: app.controller.admin_open_add_box()
+
+                                MenuTile:
+                                    size_hint: None, None
+                                    width: int((menu_grid.width - menu_grid.spacing[0] * (menu_grid.cols - 1)) / menu_grid.cols)
+                                    height: dp(118)
+                                    title: 'Удалить пользователя'
+                                    subtitle: 'Удалить учетную запись'
+                                    icon_name: 'account-remove'
+                                    on_release: app.controller.admin_open_delete_user()
+
+                                MenuTile:
+                                    size_hint: None, None
+                                    width: int((menu_grid.width - menu_grid.spacing[0] * (menu_grid.cols - 1)) / menu_grid.cols)
+                                    height: dp(118)
+                                    title: 'Удалить помещение'
+                                    subtitle: 'Удалить локацию/кабинет'
+                                    icon_name: 'home-remove'
+                                    on_release: app.controller.admin_open_delete_room()
+
+                                MenuTile:
+                                    size_hint: None, None
+                                    width: int((menu_grid.width - menu_grid.spacing[0] * (menu_grid.cols - 1)) / menu_grid.cols)
+                                    height: dp(118)
+                                    title: 'Удалить бокс'
+                                    subtitle: 'Удалить существующий бокс'
+                                    icon_name: 'archive-remove'
+                                    on_release: app.controller.admin_open_delete_box()
+
+                                MenuTile:
+                                    size_hint: None, None
+                                    width: int((menu_grid.width - menu_grid.spacing[0] * (menu_grid.cols - 1)) / menu_grid.cols)
+                                    height: dp(118)
+                                    title: 'Назначить ключи на бокс'
+                                    subtitle: 'Привязать ключи к боксам'
+                                    icon_name: 'inbox-arrow-down'
+                                    on_release: app.controller.admin_open_assign_keys_to_box()
+
+                                MenuTile:
+                                    size_hint: None, None
+                                    width: int((menu_grid.width - menu_grid.spacing[0] * (menu_grid.cols - 1)) / menu_grid.cols)
+                                    height: dp(118)
+                                    title: 'Экспорт выдач'
+                                    subtitle: 'Скачать выдачи за период'
+                                    icon_name: 'file-export'
+                                    on_release: app.controller.admin_open_export()
+
+                                MenuTile:
+                                    size_hint: None, None
+                                    width: int((menu_grid.width - menu_grid.spacing[0] * (menu_grid.cols - 1)) / menu_grid.cols)
+                                    height: dp(118)
+                                    title: 'Выданные ключи'
+                                    subtitle: 'Просмотр всех текущих выдач'
+                                    icon_name: 'key-chain'
+                                    on_release: app.controller.view_issued_keys()
+
+                                MenuTile:
+                                    size_hint: None, None
+                                    width: int((menu_grid.width - menu_grid.spacing[0] * (menu_grid.cols - 1)) / menu_grid.cols)
+                                    height: dp(118)
+                                    title: 'Снимки (сессии)'
+                                    subtitle: 'Просмотр фото по сессиям'
+                                    icon_name: 'image'
+                                    on_release: app.controller.admin_open_images_view()
+
+                                MenuTile:
+                                    size_hint: None, None
+                                    width: int((menu_grid.width - menu_grid.spacing[0] * (menu_grid.cols - 1)) / menu_grid.cols)
+                                    height: dp(118)
+                                    title: 'Секретные коды'
+                                    subtitle: 'Коды сдачи ключей без RFID'
+                                    icon_name: 'key'
+                                    on_release: app.controller.admin_open_secret_codes()
+
+                                MenuTile:
+                                    size_hint: None, None
+                                    width: int((menu_grid.width - menu_grid.spacing[0] * (menu_grid.cols - 1)) / menu_grid.cols)
+                                    height: dp(118)
+                                    title: 'Регистрация RFID ключа'
+                                    subtitle: 'Привязать метку к ключу'
+                                    icon_name: 'nfc'
+                                    on_release: app.controller.admin_open_register_rfid()

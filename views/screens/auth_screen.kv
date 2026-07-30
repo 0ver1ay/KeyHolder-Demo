@@ -1,0 +1,53 @@
+<AuthScreen@Screen>:
+    BoxLayout:
+        orientation: 'vertical'
+        spacing: dp(12)
+        padding: dp(16)
+
+        Label:
+            text: 'Авторизация'
+            color: 1, 1, 1, 1
+            size_hint_y: None
+            height: dp(36)
+
+        BoxLayout:
+            orientation: 'vertical'
+            spacing: dp(8)
+            size_hint_y: None
+            height: self.minimum_height
+
+            Spinner:
+                id: login_spinner
+                text: 'Выберите пользователя'
+                size_hint_y: None
+                height: dp(44)
+
+            TextInput:
+                id: password_input
+                hint_text: 'Пароль'
+                password: True
+                multiline: False
+                size_hint_y: None
+                height: dp(44)
+
+        BoxLayout:
+            size_hint_y: None
+            height: dp(56)
+            spacing: dp(12)
+
+            PrimaryButton:
+                text: 'Войти'
+                on_release: app.controller.on_auth_submit(login_spinner.text, password_input.text)
+            PrimaryButton:
+                text: 'Назад'
+                on_release: app.root.current = 'main'
+
+        Label:
+            id: auth_error
+            text: ''
+            color: 1, 0.4, 0.4, 1
+            size_hint_y: None
+            height: dp(24)
+
+
+

@@ -1,0 +1,32 @@
+# Python
+.venv/
+.venv-build/
+__pycache__/
+*.py[cod]
+*.pyo
+*.egg-info/
+.eggs/
+dist/
+build/
+*.spec.bak
+
+# IDE
+.idea/
+.vscode/
+
+# Local runtime config & secrets
+config.cfg
+deploy/.env
+deploy/KeyHolder-server.zip
+deploy/_package_staging/
+_package_staging/
+
+# OS
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# Dumps / backups
+*.dump
+*.rar
+*.log

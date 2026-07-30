@@ -1,0 +1,89 @@
+<AdminAddRoomScreen@Screen>:
+    on_enter: app.controller._refresh_admin_add_room_form()
+
+    AdminPage:
+        AdminScreenTitle:
+            text: 'Создать помещение / ключ'
+
+        AdminScrollBody:
+            BoxLayout:
+                orientation: 'vertical'
+                size_hint_y: None
+                height: form_card.height + dp(16)
+                size_hint_x: 1
+                padding: 0, dp(8)
+
+                AdminCenteredForm:
+                    height: form_card.height
+
+                    AdminFormCard:
+                        id: form_card
+                        width: min(root.width - dp(32), dp(520))
+                        height: form_body.minimum_height + dp(48)
+
+                        AdminFormBody:
+                            id: form_body
+
+                            AdminSectionTitle:
+                                text: 'Новое помещение'
+
+                            AdminFormRow:
+                                AdminFieldLabel:
+                                    text: 'Название:'
+                                AdminTextField:
+                                    id: admin_new_room_name
+                                    hint_text: 'Кабинет 101'
+                            AdminFormRow:
+                                AdminFieldLabel:
+                                    text: 'Комментарий:'
+                                AdminTextField:
+                                    id: admin_new_room_comment
+                                    hint_text: 'Необязательно'
+
+                            AdminFormSectionButton:
+                                text: 'Создать помещение'
+                                on_release: app.controller.admin_create_room(admin_new_room_name.text, admin_new_room_comment.text)
+
+                            AdminFormDivider:
+
+                            AdminSectionTitle:
+                                text: 'Новый ключ'
+
+                            AdminFormRow:
+                                AdminFieldLabel:
+                                    text: 'Код ключа:'
+                                AdminTextField:
+                                    id: admin_new_key_code
+                                    hint_text: 'K-101'
+                            AdminFormRow:
+                                AdminFieldLabel:
+                                    text: 'Описание:'
+                                AdminTextField:
+                                    id: admin_new_key_desc
+                                    hint_text: 'Кабинет 101'
+                            AdminFormRow:
+                                AdminFieldLabel:
+                                    text: 'Помещение:'
+                                AdminSpinner:
+                                    id: admin_room_spinner
+                                    text: 'Выберите помещение'
+                            AdminFormRow:
+                                AdminFieldLabel:
+                                    text: 'Бокс:'
+                                AdminSpinner:
+                                    id: admin_box_spinner_create_key
+                                    text: 'Выберите бокс'
+                            AdminFormRow:
+                                AdminFieldLabel:
+                                    text: 'Секретный код:'
+                                AdminTextField:
+                                    id: admin_new_key_secret
+                                    hint_text: 'Необяз. (сдача по коду)'
+                                    password: True
+
+                            AdminActionsFooter:
+                                AdminFormBackButton:
+                                    on_release: app.root.current = 'admin_menu'
+                                AdminFormSubmitButton:
+                                    text: 'Создать ключ'
+                                    on_release: app.controller.admin_create_key(admin_new_key_code.text, admin_new_key_desc.text, admin_room_spinner.text, admin_box_spinner_create_key.text, admin_new_key_secret.text)

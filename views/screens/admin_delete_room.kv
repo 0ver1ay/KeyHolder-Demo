@@ -1,0 +1,58 @@
+<AdminDeleteRoomScreen@Screen>:
+    AdminPage:
+        AdminScreenTitle:
+            text: 'Удалить помещение или ключ'
+
+        AdminScrollBody:
+            BoxLayout:
+                orientation: 'vertical'
+                size_hint_y: None
+                height: form_card.height + dp(16)
+                size_hint_x: 1
+                padding: 0, dp(8)
+
+                AdminCenteredForm:
+                    height: form_card.height
+
+                    AdminFormCard:
+                        id: form_card
+                        width: min(root.width - dp(32), dp(520))
+                        height: form_body.minimum_height + dp(48)
+
+                        AdminFormBody:
+                            id: form_body
+
+                            AdminSectionTitle:
+                                text: 'Удалить помещение'
+
+                            AdminFormRow:
+                                AdminFieldLabel:
+                                    text: 'Помещение:'
+                                AdminSpinner:
+                                    id: del_room_spinner
+                                    text: 'Выберите помещение'
+                                    on_kv_post: app.controller._populate_delete_room_spinner()
+
+                            AdminFormDangerButton:
+                                text: 'Удалить помещение'
+                                on_release: app.controller.admin_delete_room_entity_request(del_room_spinner.text)
+
+                            AdminFormDivider:
+
+                            AdminSectionTitle:
+                                text: 'Удалить ключ'
+
+                            AdminFormRow:
+                                AdminFieldLabel:
+                                    text: 'Ключ:'
+                                AdminSpinner:
+                                    id: del_key_spinner
+                                    text: 'Выберите ключ'
+                                    on_kv_post: app.controller._populate_delete_key_spinner()
+
+                            AdminActionsFooter:
+                                AdminFormBackButton:
+                                    on_release: app.root.current = 'admin_menu'
+                                AdminFormDangerButton:
+                                    text: 'Удалить ключ'
+                                    on_release: app.controller.admin_delete_key_request(del_key_spinner.text)

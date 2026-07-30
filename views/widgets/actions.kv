@@ -1,0 +1,166 @@
+<ActionButton@MDRaisedButton>:
+    size_hint: None, None
+    width: dp(200)
+    height: dp(48)
+    md_bg_color: 0.20, 0.48, 0.96, 1
+    theme_text_color: 'Custom'
+    text_color: 1,1,1,1
+
+<ActionsRow@AnchorLayout>:
+    size_hint_y: None
+    height: dp(48)
+    anchor_x: 'center'
+    anchor_y: 'center'
+    BoxLayout:
+        id: row
+        size_hint: 1, None
+        height: dp(56)
+        spacing: dp(16)
+        # usage example: add ActionButton as children in screens
+
+
+# Back button styled like screenshot: dark outline card, left circular icon
+<ActionBackButton@ButtonBehavior+BoxLayout>:
+    text: 'Назад'
+    on_release: None
+    size_hint: None, None
+    height: dp(56)
+    width: self.minimum_width * 3
+    padding: dp(16), 0
+    spacing: dp(12)
+    canvas.before:
+        Color:
+            rgba: 0.10, 0.11, 0.12, 1
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [12]
+        Color:
+            rgba: 1,1,1,0.16
+        Line:
+            rounded_rectangle: (self.x, self.y, self.width, self.height, 12)
+            width: 1.1
+        
+    AnchorLayout:
+        size_hint_x: None
+        width: dp(48)
+        id: left_col
+        anchor_x: 'center'
+        anchor_y: 'center'
+        MDIcon:
+            icon: 'arrow-left'
+            theme_text_color: 'Custom'
+            text_color: 1,1,1,1
+            size_hint: None, None
+            size: dp(28), dp(28)
+            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+    MDLabel:
+        text: root.text
+        font_style: 'Body1'
+        theme_text_color: 'Custom'
+        text_color: 1,1,1,1
+        size_hint_x: 1
+        size_hint_y: 1
+        text_size: self.width, self.height
+        shorten: True
+        shorten_from: 'right'
+        halign: 'center'
+        valign: 'middle'
+    # right placeholder to mirror left icon column width
+    Widget:
+        size_hint_x: None
+        width: dp(48)
+
+# Secondary light button with red trash icon on the right
+<ActionGhostButton@ButtonBehavior+BoxLayout>:
+    text: ''
+    on_release: None
+    size_hint: None, None
+    height: dp(56)
+    width: self.minimum_width * 3
+    padding: dp(16), 0
+    spacing: dp(12)
+    canvas.before:
+        Color:
+            rgba: 1,1,1,0.10
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [12]
+    # left placeholder to mirror right icon column width
+    Widget:
+        size_hint_x: None
+        width: dp(48)
+    MDLabel:
+        text: root.text
+        font_style: 'Body1'
+        theme_text_color: 'Custom'
+        text_color: 0.85, 0.87, 0.90, 1
+        size_hint_x: 1
+        size_hint_y: 1
+        text_size: self.width, self.height
+        shorten: True
+        shorten_from: 'right'
+        halign: 'center'
+        valign: 'middle'
+    AnchorLayout:
+        size_hint_x: None
+        width: dp(48)
+        MDIcon:
+            icon: 'trash-can-outline'
+            theme_text_color: 'Custom'
+            text_color: 1, 0.35, 0.35, 1
+            size_hint: None, None
+            size: dp(22), dp(22)
+            pos_hint: {'center_y': 0.5}
+
+# Compact centered button row (fixed-width buttons)
+<ActionsRowCompact@AnchorLayout>:
+    size_hint_y: None
+    height: dp(56)
+    anchor_x: 'center'
+    anchor_y: 'center'
+    BoxLayout:
+        id: row
+        size_hint: None, None
+        width: self.minimum_width
+        height: dp(56)
+        spacing: dp(16)
+
+
+
+# Tile-like action button styled as our room tiles (MDCard already supports on_release via ripple_behavior)
+<ActionTileButton@MDCard>:
+    text: ''
+    on_release: None
+    size_hint: 1, None
+    height: dp(140)
+    radius: [16]
+    elevation: 6
+    theme_bg_color: 'Custom'
+    ripple_behavior: True
+    padding: dp(16)
+    canvas.before:
+        Color:
+            rgba: self.md_bg_color
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [16]
+    BoxLayout:
+        orientation: 'vertical'
+        padding: 0, 0
+        AnchorLayout:
+            anchor_x: 'center'
+            anchor_y: 'center'
+            MDLabel:
+                text: root.text
+                font_style: 'Body1'
+                font_size: sp(28)
+                bold: True
+                theme_text_color: 'Custom'
+                text_color: (1, 1, 1, 1) if (hasattr(root, 'md_bg_color') and root.md_bg_color[1] < 0.5) else (0.06, 0.06, 0.07, 1)
+                halign: 'center'
+                valign: 'middle'
+                text_size: self.size
+

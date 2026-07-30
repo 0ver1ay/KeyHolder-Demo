@@ -1,0 +1,89 @@
+<MainScreen@Screen>:
+    BoxLayout:
+        orientation: "vertical"
+        spacing: dp(12)
+        padding: dp(16)
+
+        Label:
+            id: main_title
+            text: "Ключница"
+            color: 1, 1, 1, 1
+            size_hint_y: None
+            height: dp(44)
+            font_size: sp(24)
+
+        AnchorLayout:
+            id: hero_container
+            size_hint_y: 1
+            anchor_x: 'center'
+            anchor_y: 'center'
+
+            # Пост-авторизационный блок: стандартные кнопки
+            BoxLayout:
+                id: hero_post_auth
+                orientation: 'vertical'
+                spacing: dp(20)
+                size_hint: None, None
+                width: min(self.parent.width, dp(600))
+                height: self.minimum_height
+                opacity: 1
+                disabled: False
+
+                ActionTileButton:
+                    text: 'Взять ключ'
+                    md_bg_color: 0.0, 0.8, 0.2980392157, 1.0
+                    on_release: app.controller.open_take_keys()
+
+                ActionTileButton:
+                    text: 'Сдать ключ'
+                    md_bg_color: 0.8, 0.6196078431, 0.0, 1.0
+                    on_release: app.controller.open_return_keys()
+
+                ActionTileButton:
+                    text: 'Просмотр выданных ключей'
+                    md_bg_color: 0.20, 0.4784313725, 0.9607843137, 1
+                    on_release: app.controller.view_issued_keys()
+
+                BoxLayout:
+                    id: test_sys_row
+                    size_hint_y: None
+                    height: dp(60)
+                    spacing: dp(8)
+
+                    FooterButton:
+                        text: "Перезагрузить"
+                        md_bg_color: 0.38, 0.39, 0.41, 1
+                        height: dp(60)
+                        font_size: sp(18)
+                        on_release: app.controller.test_reboot_system()
+                    FooterButton:
+                        text: "Выключить"
+                        md_bg_color: 0.38, 0.39, 0.41, 1
+                        height: dp(60)
+                        font_size: sp(18)
+                        on_release: app.controller.test_shutdown_system()
+                    FooterButton:
+                        text: "Терминал"
+                        md_bg_color: 0.38, 0.39, 0.41, 1
+                        height: dp(60)
+                        font_size: sp(18)
+                        on_release: app.controller.test_open_terminal()
+
+        BoxLayout:
+            id: bottom_bar
+            size_hint_y: None
+            height: dp(76)
+            spacing: dp(12)
+
+            BoxLayout:
+                id: post_auth_bar
+                size_hint_x: 1
+                spacing: dp(12)
+                disabled: False
+                opacity: 1
+
+                FooterButton:
+                    text: "Выход"
+                    on_release: app.controller.logout()
+
+

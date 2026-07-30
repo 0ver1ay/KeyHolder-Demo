@@ -1,0 +1,80 @@
+<IssuedKeysScreen@Screen>:
+    AdminPage:
+        AdminScreenTitle:
+            text: 'Выданные ключи'
+
+        BoxLayout:
+            id: issued_box_row
+            size_hint_y: None
+            height: 0
+            opacity: 0
+            spacing: dp(12)
+            AdminFormRow:
+                AdminFieldLabel:
+                    text: 'Бокс:'
+                AdminSpinner:
+                    id: issued_box_spinner
+                    text: ''
+                    on_text: app.controller.on_issued_box_changed(self.text)
+
+        BoxLayout:
+            id: issued_filter_row
+            size_hint_y: None
+            height: 0
+            opacity: 0
+            spacing: dp(8)
+            MDIcon:
+                icon: 'magnify'
+                theme_text_color: 'Custom'
+                text_color: 1, 1, 1, 0.85
+                size_hint: None, None
+                size: dp(24), dp(24)
+                pos_hint: {'center_y': 0.5}
+            AdminTextField:
+                id: issued_filter_input
+                hint_text: 'Фильтр (название/код или user:логин)'
+                size_hint_x: 1
+                on_text: app.controller.on_filter_text('issued', self.text)
+
+        PermissionsCard:
+            size_hint: 1, 1
+            padding: dp(12)
+
+            AnchorLayout:
+                id: issued_keys_container
+                size_hint: 1, 1
+                anchor_x: 'center'
+                anchor_y: 'center'
+                on_size: app.controller.on_paged_container_resize(self, issued_keys_grid, 5, 3)
+
+                GridLayout:
+                    id: issued_keys_grid
+                    cols: 5
+                    rows: 3
+                    spacing: dp(8)
+                    size_hint: 1, 1
+
+        BoxLayout:
+            size_hint_y: None
+            height: dp(76)
+            spacing: dp(12)
+            FooterButton:
+                text: 'Назад'
+                on_release: app.controller.go_back_from_issued()
+            FooterButton:
+                text: 'Предыдущая'
+                on_release: app.controller.issued_prev_page()
+            Label:
+                id: issued_page_label
+                text: ''
+                color: 1, 1, 1, 1
+                size_hint_x: None
+                width: dp(150)
+                font_size: sp(20)
+                bold: True
+                halign: 'center'
+                valign: 'middle'
+                text_size: self.size
+            FooterButton:
+                text: 'Следующая'
+                on_release: app.controller.issued_next_page()

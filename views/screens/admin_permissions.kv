@@ -1,0 +1,58 @@
+<AdminPermissionsScreen@Screen>:
+    AdminPage:
+        AdminScreenTitle:
+            text: 'Выдача привилегий пользователям'
+
+        PermissionsCard:
+            id: admin_perm_card
+            size_hint: 1, 1
+
+            BoxLayout:
+                orientation: 'vertical'
+                spacing: dp(12)
+
+                AdminFormRow:
+                    AdminFieldLabel:
+                        text: 'Пользователь:'
+                    AdminSpinner:
+                        id: admin_user_spinner
+                        text: 'Выберите пользователя'
+                        on_text: app.controller.on_admin_user_selected(self.text)
+
+                AdminFormRow:
+                    AdminFieldLabel:
+                        text: 'Бокс:'
+                    AdminSpinner:
+                        id: admin_box_spinner
+                        text: ''
+                        on_kv_post: app.controller._populate_admin_box_spinner()
+                        on_text: app.controller.on_admin_box_changed(self.text)
+
+                AdminCaptionLabel:
+                    id: admin_user_comment
+                    text: ''
+
+                AdminScrollPanel:
+                    id: admin_keys_scroll
+
+                    AnchorLayout:
+                        id: admin_keys_container
+                        size_hint: None, None
+                        anchor_x: 'center'
+                        anchor_y: 'top'
+                        size: admin_keys_grid.minimum_width, max(admin_keys_grid.minimum_height, dp(120))
+
+                        GridLayout:
+                            id: admin_keys_grid
+                            cols: 3
+                            spacing: dp(16)
+                            padding: dp(8), dp(4)
+                            size_hint: None, None
+                            size: self.minimum_size
+
+                AdminActionsFooter:
+                    AdminFormBackButton:
+                        on_release: app.root.current = 'admin_menu'
+                    AdminFormDangerButton:
+                        text: 'Сбросить все выдачи'
+                        on_release: app.controller.reset_all_issued_keys()

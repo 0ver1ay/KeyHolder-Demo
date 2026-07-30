@@ -1,0 +1,79 @@
+<GuestScreen@Screen>:
+    BoxLayout:
+        orientation: "vertical"
+        spacing: dp(12)
+        padding: dp(16)
+
+        Label:
+            id: guest_title
+            text: "Ключница"
+            color: 1, 1, 1, 1
+            size_hint_y: None
+            height: dp(44)
+            font_size: sp(24)
+
+        AnchorLayout:
+            id: hero_container
+            size_hint_y: 1
+            anchor_x: 'center'
+            anchor_y: 'center'
+
+            # Блок до авторизации: большая кнопка "Авторизация" и просмотр выданных
+            BoxLayout:
+                id: hero_pre_auth
+                orientation: 'vertical'
+                spacing: dp(20)
+                size_hint: None, None
+                width: min(self.parent.width, dp(600))
+                height: self.minimum_height
+
+                ActionTileButton:
+                    text: 'Авторизация'
+                    md_bg_color: 0.0, 0.8, 0.3, 1.0
+                    on_release: app.controller.open_auth()
+
+                ActionTileButton:
+                    text: 'Просмотр выданных ключей'
+                    md_bg_color: 0.20, 0.4784313725, 0.9607843137, 1
+                    on_release: app.controller.view_issued_keys()
+
+                BoxLayout:
+                    size_hint_y: None
+                    height: dp(60)
+                    spacing: dp(8)
+
+                    FooterButton:
+                        text: "Перезагрузить"
+                        md_bg_color: 0.38, 0.39, 0.41, 1
+                        height: dp(60)
+                        font_size: sp(18)
+                        on_release: app.controller.test_reboot_system()
+                    FooterButton:
+                        text: "Выключить"
+                        md_bg_color: 0.38, 0.39, 0.41, 1
+                        height: dp(60)
+                        font_size: sp(18)
+                        on_release: app.controller.test_shutdown_system()
+                    FooterButton:
+                        text: "Терминал"
+                        md_bg_color: 0.38, 0.39, 0.41, 1
+                        height: dp(60)
+                        font_size: sp(18)
+                        on_release: app.controller.test_open_terminal()
+
+        BoxLayout:
+            id: bottom_bar
+            size_hint_y: None
+            height: dp(76)
+            spacing: dp(12)
+
+            BoxLayout:
+                id: pre_auth_bar
+                size_hint_x: 1
+                spacing: dp(12)
+
+                FooterButton:
+                    text: "Сдать по секретному коду"
+                    on_release: app.controller.open_secret_code()
+
+

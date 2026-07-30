@@ -1,0 +1,49 @@
+<AuthLoginScreen@Screen>:
+    BoxLayout:
+        orientation: 'vertical'
+        padding: dp(16)
+        spacing: dp(12)
+        AnchorLayout:
+            anchor_x: 'center'
+            anchor_y: 'center'
+            Label:
+                text: 'Приложите RFID метку к считывателю.'
+                color: 1, 1, 1, 1
+                font_size: '22sp'
+                halign: 'center'
+                valign: 'middle'
+                text_size: self.size
+        BoxLayout:
+            size_hint_y: None
+            height: dp(76)
+            spacing: dp(12)
+            FooterButton:
+                text: 'Назад'
+                on_release: app.root.current = 'guest' if app.root.has_screen('guest') else 'main'
+
+
+<AuthPinScreen@Screen>:
+    BoxLayout:
+        orientation: 'vertical'
+        padding: dp(16)
+        spacing: dp(12)
+        AnchorLayout:
+            anchor_x: 'center'
+            anchor_y: 'center'
+            Label:
+                text: 'Приложите RFID метку к считывателю.'
+                color: 1, 1, 1, 1
+                font_size: '22sp'
+                halign: 'center'
+                valign: 'middle'
+                text_size: self.size
+        BoxLayout:
+            size_hint_y: None
+            height: dp(76)
+            spacing: dp(12)
+            FooterButton:
+                text: 'Назад'
+                on_release: app.root.current = 'guest' if app.root.has_screen('guest') else 'main'
+
+
+

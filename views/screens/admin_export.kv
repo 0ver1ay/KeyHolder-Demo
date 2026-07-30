@@ -1,0 +1,180 @@
+<AdminExportScreen@Screen>:
+    on_pre_enter: app.controller._admin_export_init_date_spinners()
+    AdminPage:
+        AdminScreenTitle:
+            text: 'Экспорт выдач ключей'
+
+        PermissionsCard:
+            size_hint: 1, 1
+            padding: dp(8)
+
+            AdminHBoxScroll:
+                id: export_hscroll
+                size_hint: 1, 1
+
+                BoxLayout:
+                    id: export_table_root
+                    orientation: 'vertical'
+                    size_hint_x: None
+                    size_hint_y: 1
+                    # dp(910) = сумма ширин колонок (см. cols в _build_admin_export_table)
+                    width: max(dp(910), export_hscroll.width)
+
+                    AdminTableRow:
+                        id: export_header_row
+                        bg: 0.24, 0.26, 0.30, 1
+
+                    BoxLayout:
+                        id: export_filter_row
+                        orientation: 'horizontal'
+                        size_hint_y: None
+                        height: dp(48)
+                        spacing: 0
+                        padding: 0, dp(4)
+
+                        AdminFilterInput:
+                            id: export_filter_ts
+                            hint_text: 'Поиск…'
+                            width: dp(150)
+                            pos_hint: {'center_y': 0.5}
+                            on_text: app.controller.admin_export_set_column_filter('ts', self.text)
+                        AdminFilterInput:
+                            id: export_filter_user
+                            hint_text: 'Поиск…'
+                            width: dp(150)
+                            pos_hint: {'center_y': 0.5}
+                            on_text: app.controller.admin_export_set_column_filter('user', self.text)
+                        AdminFilterInput:
+                            id: export_filter_key
+                            hint_text: 'Поиск…'
+                            width: dp(220)
+                            pos_hint: {'center_y': 0.5}
+                            on_text: app.controller.admin_export_set_column_filter('key', self.text)
+                        AdminFilterInput:
+                            id: export_filter_action
+                            hint_text: 'Поиск…'
+                            width: dp(110)
+                            pos_hint: {'center_y': 0.5}
+                            on_text: app.controller.admin_export_set_column_filter('action', self.text)
+                        AdminFilterInput:
+                            id: export_filter_box
+                            hint_text: 'Поиск…'
+                            width: dp(120)
+                            pos_hint: {'center_y': 0.5}
+                            on_text: app.controller.admin_export_set_column_filter('box', self.text)
+                        AdminFilterInput:
+                            id: export_filter_room
+                            hint_text: 'Поиск…'
+                            size_hint_x: 1
+                            pos_hint: {'center_y': 0.5}
+                            on_text: app.controller.admin_export_set_column_filter('room', self.text)
+
+                    AdminFormDivider:
+                        color: 0.30, 0.32, 0.35, 1
+
+                    BoxLayout:
+                        id: export_table_container
+                        orientation: 'vertical'
+                        size_hint_y: None
+                        height: self.minimum_height
+
+                    Widget:
+                        size_hint_y: 1
+
+        BoxLayout:
+            orientation: 'vertical'
+            size_hint_y: None
+            height: self.minimum_height
+            spacing: dp(8)
+
+            AdminFooterBar:
+                BoxLayout:
+                    size_hint_x: None
+                    width: self.minimum_width
+                    height: dp(48)
+                    spacing: dp(8)
+
+                    AdminDateRow:
+                        size_hint_x: None
+                        width: self.minimum_width
+                        AdminDateLabel:
+                            text: 'От:'
+                        AdminDateSpinner:
+                            id: export_filter_date_from_year
+                            text: 'Год'
+                            values: ['Год']
+                            on_text: app.controller.admin_export_update_date('from')
+                        AdminDateSpinner:
+                            id: export_filter_date_from_month
+                            text: 'Месяц'
+                            values: ['Месяц']
+                            on_text: app.controller.admin_export_update_date('from')
+                        AdminDateSpinner:
+                            id: export_filter_date_from_day
+                            text: 'День'
+                            values: ['День']
+                            on_text: app.controller.admin_export_update_date('from')
+
+                    AdminDateRow:
+                        size_hint_x: None
+                        width: self.minimum_width
+                        AdminDateLabel:
+                            text: 'До:'
+                        AdminDateSpinner:
+                            id: export_filter_date_to_year
+                            text: 'Год'
+                            values: ['Год']
+                            on_text: app.controller.admin_export_update_date('to')
+                        AdminDateSpinner:
+                            id: export_filter_date_to_month
+                            text: 'Месяц'
+                            values: ['Месяц']
+                            on_text: app.controller.admin_export_update_date('to')
+                        AdminDateSpinner:
+                            id: export_filter_date_to_day
+                            text: 'День'
+                            values: ['День']
+                            on_text: app.controller.admin_export_update_date('to')
+
+                    MDIconButton:
+                        icon: 'close-circle'
+                        theme_icon_color: 'Custom'
+                        icon_color: 0.75, 0.77, 0.82, 1
+                        size_hint_x: None
+                        width: dp(40)
+                        pos_hint: {'center_y': 0.5}
+                        on_release: app.controller.admin_export_clear_date_filter()
+
+            AdminFooterBar:
+                BoxLayout:
+                    size_hint_x: None
+                    width: max(self.minimum_width, root.width)
+                    height: dp(48)
+                    spacing: dp(8)
+
+                    AdminPager:
+                        AdminPagerButton:
+                            text: '<'
+                            on_release: app.controller.admin_export_prev_page()
+                        AdminPageLabel:
+                            id: export_page_label
+                            width: dp(180)
+                        AdminPagerButton:
+                            text: '>'
+                            on_release: app.controller.admin_export_next_page()
+                    Widget:
+                        size_hint_x: 1
+                    AdminFormDangerButton:
+                        text: 'Удаление'
+                        size_hint_x: None
+                        width: dp(130)
+                        on_release: app.controller.admin_export_delete_by_period()
+                    AdminFormSubmitButton:
+                        text: 'Экспорт'
+                        size_hint_x: None
+                        width: dp(130)
+                        on_release: app.controller.admin_export_events(None)
+                    AdminFormBackButton:
+                        size_hint_x: None
+                        width: dp(130)
+                        on_release: app.root.current = 'admin_menu'

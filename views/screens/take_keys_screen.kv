@@ -1,0 +1,77 @@
+<TakeKeysScreen@Screen>:
+    BoxLayout:
+        orientation: 'vertical'
+        spacing: dp(12)
+        padding: dp(16)
+
+        BoxLayout:
+            id: take_filter_row
+            size_hint_y: None
+            height: 0
+            opacity: 0
+            spacing: dp(8)
+            padding: 0, 0, 0, 0
+            MDIcon:
+                icon: 'magnify'
+                theme_text_color: 'Custom'
+                text_color: 1, 1, 1, 0.85
+                size_hint: None, None
+                size: dp(24), dp(24)
+                pos_hint: {'center_y': 0.5}
+            MDTextField:
+                id: take_filter_input
+                hint_text: 'Фильтр (название/код). Пример: A12 user:ivan'
+                mode: 'fill'
+                fill_color: (1,1,1,0.06)
+                text_color: 1,1,1,1
+                hint_text_color: 0.7,0.7,0.75,1
+                size_hint_x: 1
+                on_text: app.controller.on_filter_text('take', self.text)
+
+        Label:
+            text: 'Выбрать ключ для взятия'
+            color: 1, 1, 1, 1
+            size_hint_y: None
+            height: dp(36)
+
+        AnchorLayout:
+            id: take_keys_container
+            size_hint_y: 1
+            anchor_x: 'center'
+            anchor_y: 'center'
+            on_size: app.controller.on_paged_container_resize(self, take_keys_grid, 5, 3)
+
+            GridLayout:
+                id: take_keys_grid
+                cols: 5
+                rows: 3
+                spacing: dp(8)
+                size_hint: 1, 1
+
+        BoxLayout:
+            size_hint_y: None
+            height: dp(76)
+            spacing: dp(12)
+
+            FooterButton:
+                text: 'Назад'
+                on_release: app.controller.on_take_cancel()
+            FooterButton:
+                text: 'Предыдущая'
+                on_release: app.controller.take_prev_page()
+            Label:
+                id: take_page_label
+                text: ''
+                color: 1,1,1,1
+                size_hint_x: None
+                width: dp(150)
+                font_size: sp(20)
+                bold: True
+                halign: 'center'
+                valign: 'middle'
+                text_size: self.size
+            FooterButton:
+                text: 'Следующая'
+                on_release: app.controller.take_next_page()
+
+

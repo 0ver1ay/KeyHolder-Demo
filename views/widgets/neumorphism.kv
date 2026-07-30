@@ -1,0 +1,343 @@
+#:import Window kivy.core.window.Window
+<NeuCard@BoxLayout>:
+    orientation: 'vertical'
+    padding: dp(16)
+    spacing: dp(12)
+    size_hint: None, None
+    size: self.minimum_width, self.minimum_height
+    canvas.before:
+        Color:
+            rgba: 0.10, 0.11, 0.12, 1
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [18, 18, 18, 18]
+        # Outer highlight (bottom-right)
+        Color:
+            rgba: 1, 1, 1, 0.12
+        Line:
+            rounded_rectangle: (self.x, self.y, self.width, self.height, 18)
+            width: 1
+
+<GlassPanel@BoxLayout>:
+    orientation: 'vertical'
+    padding: dp(16)
+    spacing: dp(12)
+    size_hint: None, None
+    size: self.minimum_width, self.minimum_height
+    canvas.before:
+        # outer glow vignette
+        Color:
+            rgba: 0, 0, 0, 0.22
+        RoundedRectangle:
+            pos: self.x - dp(6), self.y - dp(6)
+            size: self.width + dp(12), self.height + dp(12)
+            radius: [20, 20, 20, 20]
+        # clip to rounded rect to prevent content overflowing the corners
+        StencilPush
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [18, 18, 18, 18]
+        StencilUse
+        # main surface using prebuilt gradient texture for smooth result
+        Color:
+            rgba: 1, 1, 1, 1
+        RoundedRectangle:
+            texture: root.grad_tex
+            pos: self.pos
+            size: self.size
+            radius: [18, 18, 18, 18]
+        # no top cap highlight to avoid horizontal stripe
+    canvas.after:
+        # remove bright outer stroke; keep subtle inner shadow
+        Color:
+            rgba: 0, 0, 0, 0.45
+        Line:
+            rounded_rectangle: (self.x + dp(1), self.y + dp(1), self.width - dp(2), self.height - dp(2), 16)
+            width: dp(1)
+        StencilUnUse
+        StencilPop
+
+<NeuButton@Button>:
+    size_hint_y: None
+    height: dp(44)
+    background_normal: ''
+    background_down: ''
+    color: 1, 1, 1, 1
+    font_size: sp(16)
+    padding: dp(16), 0
+    # Neutral base to match card (higher contrast)
+    background_color: 0.22, 0.24, 0.28, 1
+    canvas.before:
+        Color:
+            rgba: (self.background_color[0], self.background_color[1], self.background_color[2], self.background_color[3])
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [14, 14, 14, 14]
+        # Soft highlight and shadow to simulate depth
+        Color:
+            rgba: (1, 1, 1, 0.12 if self.state == 'normal' else 0.06)
+        Line:
+            rounded_rectangle: (self.x, self.y, self.width, self.height, 14)
+            width: 1
+        Color:
+            rgba: (0, 0, 0, 0.5 if self.state == 'normal' else 0.7)
+        Line:
+            rounded_rectangle: (self.x + dp(1), self.y + dp(1), self.width - dp(2), self.height - dp(2), 12)
+            width: 1
+
+# Grid card item (legacy)
+<NeuCardButton@ButtonBehavior+BoxLayout>:
+    orientation: 'vertical'
+    size_hint: None, None
+    size: dp(260), dp(120)
+    padding: dp(14)
+    spacing: dp(8)
+    background_color: 0.30, 0.33, 0.38, 1
+    title: ''
+    subtitle: ''
+    icon_text: ''
+    canvas.before:
+        Color:
+            rgba: 0.20, 0.22, 0.26, 1
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [16, 16, 16, 16]
+        Color:
+            rgba: 1, 1, 1, 0.22
+        Line:
+            rounded_rectangle: (self.x, self.y, self.width, self.height, 16)
+            width: 1
+        Color:
+            rgba: 0, 0, 0, 0.55
+        Line:
+            rounded_rectangle: (self.x + dp(1), self.y + dp(1), self.width - dp(2), self.height - dp(2), 14)
+            width: 1
+    BoxLayout:
+        size_hint_y: None
+        height: dp(32)
+        spacing: dp(8)
+        canvas.before:
+            Color:
+                rgba: 0, 0, 0, 0
+        Label:
+            text: root.icon_text
+            size_hint_x: None
+            width: dp(20)
+            color: 0.96, 0.96, 0.96, 1
+        Label:
+            text: root.title
+            color: 1, 1, 1, 1
+            text_size: self.size
+            halign: 'left'
+            valign: 'middle'
+    Label:
+        text: root.subtitle
+        color: 0.86, 0.88, 0.92, 1
+        text_size: self.width, None
+        halign: 'left'
+        valign: 'top'
+    Widget:
+        size_hint_y: 1
+
+<IOSCardPanel@BoxLayout>:
+    # Dark container panel (backdrop)
+    padding: dp(16) * (Window.width / 1280.0 if Window.width < 1280 else 1)
+    spacing: dp(12) * (Window.width / 1280.0 if Window.width < 1280 else 1)
+    size_hint_y: None
+    height: self.minimum_height
+    canvas.before:
+        # vignette
+        Color:
+            rgba: 0, 0, 0, 0.22
+        RoundedRectangle:
+            pos: self.x - dp(6) * (Window.width / 1280.0 if Window.width < 1280 else 1), self.y - dp(6) * (Window.width / 1280.0 if Window.width < 1280 else 1)
+            size: self.width + dp(12) * (Window.width / 1280.0 if Window.width < 1280 else 1), self.height + dp(12) * (Window.width / 1280.0 if Window.width < 1280 else 1)
+            radius: [20 * (Window.width / 1280.0 if Window.width < 1280 else 1)] * 4
+        # clip
+        StencilPush
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [18 * (Window.width / 1280.0 if Window.width < 1280 else 1)] * 4
+        StencilUse
+        # flat fill (no gradient) for cleaner panel (matches app background)
+        Color:
+            rgba: 0.4, 0.4, 0.4, 0.96
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [18, 18, 18, 18]
+    canvas.after:
+        Color:
+            rgba: 0, 0, 0, 0.42
+        Line:
+            rounded_rectangle: (self.x + dp(1) * (Window.width / 1280.0 if Window.width < 1280 else 1), self.y + dp(1) * (Window.width / 1280.0 if Window.width < 1280 else 1), self.width - dp(2) * (Window.width / 1280.0 if Window.width < 1280 else 1), self.height - dp(2) * (Window.width / 1280.0 if Window.width < 1280 else 1), 16 * (Window.width / 1280.0 if Window.width < 1280 else 1))
+            width: dp(1) * (Window.width / 1280.0 if Window.width < 1280 else 1)
+        StencilUnUse
+        StencilPop
+
+<IOSCardButton@HoverBehavior+ButtonBehavior+BoxLayout>:
+    # Light content button placed on top of IOSCardPanel
+    orientation: 'vertical'
+    size_hint: None, None
+    size: dp(260) * (Window.width / 1280.0 if Window.width < 1280 else 1), dp(120) * (Window.width / 1280.0 if Window.width < 1280 else 1)
+    padding: dp(14) * (Window.width / 1280.0 if Window.width < 1280 else 1)
+    spacing: dp(8) * (Window.width / 1280.0 if Window.width < 1280 else 1)
+    title: ''
+    subtitle: ''
+    icon_text: ''
+    canvas.before:
+        # elevation shadow (raised a couple pixels)
+        Color:
+            rgba: (0, 0, 0, 0.64 if self.hovered else 0.52)
+        RoundedRectangle:
+            pos: self.x + dp(1) * (Window.width / 1280.0 if Window.width < 1280 else 1), self.y - (dp(2) * (Window.width / 1280.0 if Window.width < 1280 else 1))
+            size: self.width - dp(2) * (Window.width / 1280.0 if Window.width < 1280 else 1), dp(14) * (Window.width / 1280.0 if Window.width < 1280 else 1)
+            radius: [14 * (Window.width / 1280.0 if Window.width < 1280 else 1)] * 4
+        # clip to rounded rect
+        StencilPush
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [16 * (Window.width / 1280.0 if Window.width < 1280 else 1)] * 4
+        StencilUse
+        # light gradient
+        Color:
+            rgba: 1, 1, 1, 1
+        RoundedRectangle:
+            texture: root.grad_tex if hasattr(root, 'grad_tex') else None
+            pos: self.pos
+            size: self.size
+            radius: [16, 16, 16, 16]
+        # hover dim overlay on gradient
+        Color:
+            rgba: (0, 0, 0, 0.06 if self.hovered else 0)
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [16 * (Window.width / 1280.0 if Window.width < 1280 else 1)] * 4
+    canvas.after:
+        # light border + inner shadow (border brighter by a couple tones)
+        Color:
+            rgba: 1, 1, 1, (0.32 if self.hovered else 0.28)
+        Line:
+            rounded_rectangle: (self.x, self.y, self.width, self.height, 16 * (Window.width / 1280.0 if Window.width < 1280 else 1))
+            width: dp(1) * (Window.width / 1280.0 if Window.width < 1280 else 1)
+        Color:
+            rgba: 0, 0, 0, (0.40 if self.hovered else 0.36)
+        Line:
+            rounded_rectangle: (self.x + dp(1) * (Window.width / 1280.0 if Window.width < 1280 else 1), self.y + dp(1) * (Window.width / 1280.0 if Window.width < 1280 else 1), self.width - dp(2) * (Window.width / 1280.0 if Window.width < 1280 else 1), self.height - dp(2) * (Window.width / 1280.0 if Window.width < 1280 else 1), 14 * (Window.width / 1280.0 if Window.width < 1280 else 1))
+            width: dp(1) * (Window.width / 1280.0 if Window.width < 1280 else 1)
+        StencilUnUse
+        StencilPop
+
+    BoxLayout:
+        size_hint_y: None
+        height: dp(32) * (Window.width / 1280.0 if Window.width < 1280 else 1)
+        spacing: dp(8) * (Window.width / 1280.0 if Window.width < 1280 else 1)
+        Label:
+            text: root.title
+            font_name: 'Roboto'
+            font_size: sp(17) * (0.8 if Window.width < 1024 else (1 if Window.width >= 1280 else Window.width / 1280.0))
+            bold: True
+            color: 0.08, 0.08, 0.10, 1
+            text_size: self.size
+            halign: 'left'
+            valign: 'middle'
+    Label:
+        text: root.subtitle
+        font_name: 'Roboto'
+        font_size: sp(16) * (0.8 if Window.width < 1024 else (1 if Window.width >= 1280 else Window.width / 1280.0))
+        color: 0.12, 0.13, 0.14, 1
+        text_size: self.width, None
+        halign: 'left'
+        valign: 'top'
+<IOSMenuButton@HoverBehavior+ButtonBehavior+BoxLayout>:
+    # iOS-style gray menu tile with icon, title, subtitle
+    orientation: 'vertical'
+    size_hint: None, None
+    size: dp(260), dp(120)
+    padding: dp(14)
+    spacing: dp(8)
+    title: ''
+    subtitle: ''
+    icon_text: ''
+    canvas.before:
+        # elevation shadow
+        Color:
+            rgba: (0, 0, 0, 0.55 if self.hovered else 0.45)
+        RoundedRectangle:
+            pos: self.x + dp(1), self.y - (dp(5) if self.hovered else dp(4))
+            size: self.width - dp(2), dp(12)
+            radius: [14, 14, 14, 14]
+        # clip to rounded rect
+        StencilPush
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [16, 16, 16, 16]
+        StencilUse
+        # base surface with gradient texture
+        Color:
+            rgba: 1, 1, 1, 1
+        RoundedRectangle:
+            texture: root.grad_tex
+            pos: self.pos
+            size: self.size
+            radius: [16, 16, 16, 16]
+        # no top cap highlight on hover to keep top edge clean
+    canvas.after:
+        # lighten button border slightly for contrast
+        Color:
+            rgba: 1, 1, 1, (0.18 if self.hovered else 0.14)
+        Line:
+            rounded_rectangle: (self.x, self.y, self.width, self.height, 16)
+            width: dp(1)
+        Color:
+            rgba: 0, 0, 0, (0.42 if self.hovered else 0.38)
+        Line:
+            rounded_rectangle: (self.x + dp(1), self.y + dp(1), self.width - dp(2), self.height - dp(2), 14)
+            width: dp(1)
+        StencilUnUse
+        StencilPop
+    BoxLayout:
+        size_hint_y: None
+        height: dp(32)
+        spacing: dp(8)
+        Label:
+            text: root.icon_text
+            size_hint_x: None
+            width: dp(20)
+            font_name: 'Roboto'
+            color: 0.10, 0.10, 0.12, 1
+        Label:
+            text: root.title
+            font_name: 'Roboto'
+            font_size: sp(14)
+            bold: True
+            color: 0.08, 0.08, 0.10, 1
+            text_size: self.size
+            halign: 'left'
+            valign: 'middle'
+    Label:
+        text: root.subtitle
+        font_name: 'Roboto'
+        font_size: sp(13)
+        color: 0.12, 0.13, 0.14, 1
+        text_size: self.width, None
+        halign: 'left'
+        valign: 'top'
+    Widget:
+        size_hint_y: 1
+
+<NeuCardGrid@GridLayout>:
+    cols: 3
+    spacing: dp(16)
+    size_hint: None, None
+    size: dp(816), self.minimum_height
+
+

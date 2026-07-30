@@ -1,0 +1,151 @@
+<AdminImagesScreen@Screen>:
+    on_pre_enter: app.controller._admin_images_init_date_spinners()
+    AdminPage:
+        AdminScreenTitle:
+            text: 'Просмотр фотосессий'
+
+        BoxLayout:
+            id: images_main
+            orientation: 'horizontal'
+            spacing: dp(12)
+            size_hint_y: 1
+            on_size:
+                self.orientation = ('vertical' if self.width < dp(880) else 'horizontal');
+                sessions_panel.size_hint_y = (0.42 if self.orientation == 'vertical' else 1);
+                sessions_panel.size_hint_x = 1;
+                viewer_panel.size_hint_y = (0.58 if self.orientation == 'vertical' else 1);
+                viewer_panel.size_hint_x = 1;
+                images_sep.opacity = (0 if self.orientation == 'vertical' else 1)
+
+            AdminPanelCard:
+                id: sessions_panel
+                size_hint_x: 0.38
+
+                BoxLayout:
+                    orientation: 'vertical'
+                    spacing: dp(12)
+
+                    AdminSectionTitle:
+                        text: 'Сессии съёмки'
+
+                    AdminFormDivider:
+
+                    AdminStatusLabel:
+                        text: 'Период:'
+
+                    AdminDateRow:
+                        AdminDateLabel:
+                            text: 'От:'
+                        AdminDateSpinner:
+                            id: filter_date_from_year
+                            text: 'Год'
+                            size_hint_x: 1
+                            values: ['Год']
+                            on_text: app.controller.admin_images_update_date('from')
+                        AdminDateSpinner:
+                            id: filter_date_from_month
+                            text: 'Месяц'
+                            size_hint_x: 1
+                            values: ['Месяц']
+                            on_text: app.controller.admin_images_update_date('from')
+                        AdminDateSpinner:
+                            id: filter_date_from_day
+                            text: 'День'
+                            size_hint_x: 1
+                            values: ['День']
+                            on_text: app.controller.admin_images_update_date('from')
+
+                    AdminDateRow:
+                        AdminDateLabel:
+                            text: 'До:'
+                        AdminDateSpinner:
+                            id: filter_date_to_year
+                            text: 'Год'
+                            size_hint_x: 1
+                            values: ['Год']
+                            on_text: app.controller.admin_images_update_date('to')
+                        AdminDateSpinner:
+                            id: filter_date_to_month
+                            text: 'Месяц'
+                            size_hint_x: 1
+                            values: ['Месяц']
+                            on_text: app.controller.admin_images_update_date('to')
+                        AdminDateSpinner:
+                            id: filter_date_to_day
+                            text: 'День'
+                            size_hint_x: 1
+                            values: ['День']
+                            on_text: app.controller.admin_images_update_date('to')
+                        MDIconButton:
+                            icon: 'close-circle'
+                            theme_icon_color: 'Custom'
+                            icon_color: 0.75, 0.77, 0.82, 1
+                            size_hint_x: None
+                            width: dp(40)
+                            on_release: app.controller.admin_images_clear_date_filter()
+
+                    AdminScrollBody:
+                        MDList:
+                            id: sessions_list
+
+            Widget:
+                id: images_sep
+                size_hint_x: None
+                width: dp(1)
+                canvas:
+                    Color:
+                        rgba: 0.35, 0.36, 0.38, 1
+                    Rectangle:
+                        pos: self.pos
+                        size: self.size
+
+            AdminPanelCard:
+                id: viewer_panel
+
+                BoxLayout:
+                    orientation: 'vertical'
+                    spacing: dp(12)
+
+                    AdminSectionTitle:
+                        id: session_title
+                        text: 'Просмотр сессии'
+
+                    AdminFormDivider:
+
+                    AnchorLayout:
+                        anchor_x: 'center'
+                        anchor_y: 'center'
+                        size_hint_y: 1
+                        Image:
+                            id: img_view
+                            size_hint: 1, 1
+                            allow_stretch: True
+                            keep_ratio: True
+
+                    BoxLayout:
+                        size_hint_y: None
+                        height: dp(48)
+                        spacing: dp(12)
+                        MDLabel:
+                            id: img_counter
+                            text: '0 / 0'
+                            theme_text_color: 'Secondary'
+                            font_style: 'Body2'
+                            size_hint_x: None
+                            width: dp(80)
+                            valign: 'middle'
+                            text_size: self.size
+                        AdminImageSlider:
+                            id: img_slider
+                            min: 1
+                            max: 1
+                            step: 1
+                            value: 1
+                            on_value: app.controller.on_admin_image_slider(int(self.value))
+
+        AdminActionsFooter:
+            AdminFormDangerButton:
+                text: 'Удалить за период'
+                on_release: app.controller.admin_images_delete_by_period()
+            AdminFormBackButton:
+                on_release: app.root.current = 'admin_menu'

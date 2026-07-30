@@ -1,0 +1,59 @@
+<AdminAddUserScreen@Screen>:
+    AdminPage:
+        AdminScreenTitle:
+            text: 'Создать пользователя'
+
+        AdminScreenSubtitle:
+            text: 'Логин и пароль обязательны; телефон и комментарий — по желанию'
+
+        AdminScrollBody:
+            BoxLayout:
+                orientation: 'vertical'
+                size_hint_y: None
+                height: form_card.height + dp(16)
+                size_hint_x: 1
+                padding: 0, dp(8)
+
+                AdminCenteredForm:
+                    height: form_card.height
+
+                    AdminFormCard:
+                        id: form_card
+                        width: min(root.width - dp(32), dp(520))
+                        height: form_body.minimum_height + dp(48)
+
+                        AdminFormBody:
+                            id: form_body
+
+                            AdminFormRow:
+                                AdminFieldLabel:
+                                    text: 'Логин: *'
+                                AdminTextField:
+                                    id: admin_new_login
+                                    hint_text: 'Обязательно'
+                            AdminFormRow:
+                                AdminFieldLabel:
+                                    text: 'Пароль: *'
+                                AdminTextField:
+                                    id: admin_new_password
+                                    hint_text: 'Обязательно'
+                                    password: True
+                            AdminFormRow:
+                                AdminFieldLabel:
+                                    text: 'Телефон:'
+                                AdminTextField:
+                                    id: admin_new_phone
+                                    hint_text: 'Необязательно'
+                            AdminFormRow:
+                                AdminFieldLabel:
+                                    text: 'Комментарий:'
+                                AdminTextField:
+                                    id: admin_new_comment
+                                    hint_text: 'Необязательно'
+
+                            AdminActionsFooter:
+                                AdminFormBackButton:
+                                    on_release: app.root.current = 'admin_menu'
+                                AdminFormSubmitButton:
+                                    text: 'Создать'
+                                    on_release: app.controller.admin_add_user(admin_new_login.text, admin_new_password.text, admin_new_phone.text, admin_new_comment.text)

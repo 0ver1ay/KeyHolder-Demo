@@ -1,0 +1,25 @@
+# Шаблон systemd-юнита для автозапуска AdminApp (не устанавливается автоматически).
+# GUI-приложение: нужна активная графическая сессия и переменная DISPLAY у пользователя.
+# Перед использованием замените __USER__, __REPO_ROOT__ и при необходимости путь к config.deploy.cfg.
+#
+# Пример установки:
+#   sudo cp deploy/systemd/keyholder-admin.service /etc/systemd/system/
+#   sudo systemctl daemon-reload
+#   sudo systemctl enable --now keyholder-admin.service
+
+[Unit]
+Description=KeyHolder AdminApp
+After=network.target
+
+[Service]
+Type=simple
+User=__USER__
+WorkingDirectory=__REPO_ROOT__/dist/AdminApp
+Environment=KIVY_LOG_LEVEL=info
+# Environment=DISPLAY=:0
+ExecStart=__REPO_ROOT__/deploy/run_admin.sh
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

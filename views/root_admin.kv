@@ -1,0 +1,40 @@
+#:import NoTransition kivy.uix.screenmanager.NoTransition
+
+RootManager:
+
+<RootManager@ScreenManager>:
+    transition: NoTransition()
+    AdminMenuScreen:
+        name: "admin_menu"
+    AdminPermissionsScreen:
+        name: "admin_permissions"
+    AdminSecretCodesScreen:
+        name: "admin_secret_codes"
+    AdminAddUserScreen:
+        name: "admin_add_user"
+    AdminAddRoomScreen:
+        name: "admin_add_room"
+    AdminAddBoxScreen:
+        name: "admin_add_box"
+    AdminDeleteUserScreen:
+        name: "admin_delete_user"
+    AdminDeleteRoomScreen:
+        name: "admin_delete_room"
+    AdminDeleteBoxScreen:
+        name: "admin_delete_box"
+    AdminExportScreen:
+        name: "admin_export"
+    IssuedKeysScreen:
+        name: "issued"
+    AdminAssignBoxScreen:
+        name: "admin_assign_box"
+    AdminRegisterRfidScreen:
+        name: "admin_register_rfid"
+    AdminRegisterUserRfidScreen:
+        name: "admin_register_user_rfid"
+    AdminReassignUserRfidScreen:
+        name: "admin_reassign_user_rfid"
+    AdminImagesScreen:
+        name: "admin_images"
+
+

@@ -1,0 +1,22 @@
+; Local development template.
+; cp config.cfg.example config.cfg
+
+[database]
+host=127.0.0.1
+port=5433
+user=postgres
+password=postgres
+name=postgres
+
+[device]
+box_id=1
+camera_index=0
+idle_timeout=90
+; TCP endpoint of the key-cabinet controller (demo: localhost)
+device_host=127.0.0.1
+device_port=5100
+
+[rfid]
+host=127.0.0.1
+port=5200
+mode=both

@@ -1,0 +1,43 @@
+<AdminRegisterRfidScreen@Screen>:
+    AdminPage:
+        AdminScreenTitle:
+            text: 'Регистрация RFID ключа'
+
+        AdminScrollBody:
+            BoxLayout:
+                orientation: 'vertical'
+                size_hint_y: None
+                height: form_card.height + dp(16)
+                size_hint_x: 1
+                padding: 0, dp(8)
+
+                AdminCenteredForm:
+                    height: form_card.height
+
+                    AdminFormCard:
+                        id: form_card
+                        width: min(root.width - dp(32), dp(520))
+                        height: form_body.minimum_height + dp(48)
+
+                        AdminFormBody:
+                            id: form_body
+
+                            AdminFormRow:
+                                AdminFieldLabel:
+                                    text: 'Ключ:'
+                                AdminSpinner:
+                                    id: key_spinner
+                                    text: 'Выберите ключ'
+
+                            AdminStatusLabel:
+                                id: rfid_status
+                                text: 'Нажмите "Ждать RFID", затем приложите метку.'
+                                size_hint_y: None
+                                height: self.texture_size[1] + dp(8)
+
+                            AdminActionsFooter:
+                                AdminFormBackButton:
+                                    on_release: app.root.current = 'admin_menu'
+                                AdminFormSubmitButton:
+                                    text: 'Ждать RFID'
+                                    on_release: app.controller.admin_register_rfid_arm(key_spinner.text)

@@ -1,0 +1,182 @@
+<MainScreen@Screen>:
+    BoxLayout:
+        orientation: "vertical"
+        spacing: dp(12)
+        padding: dp(16)
+
+        Label:
+            id: main_title
+            text: "Ключница"
+            color: 1, 1, 1, 1
+            size_hint_y: None
+            height: dp(44)
+            font_size: sp(24)
+
+        AnchorLayout:
+            id: keys_container
+            size_hint_y: 1
+            anchor_x: 'center'
+            anchor_y: 'center'
+            on_size: app.controller.on_container_resize(self, keys_grid)
+
+            ScrollView:
+                id: keys_scroll
+                size_hint: 1, 1
+                do_scroll_x: True
+                do_scroll_y: True
+                bar_width: dp(8)
+                scroll_type: ['bars', 'content']
+
+                AnchorLayout:
+                    id: grid_anchor
+                    size_hint: None, None
+                    anchor_x: 'center'
+                    anchor_y: 'center'
+                    size: max(keys_container.width, keys_grid.minimum_width), max(keys_container.height, keys_grid.minimum_height)
+
+                    GridLayout:
+                        id: keys_grid
+                        cols: 6
+                        rows: 4
+                        spacing: dp(8)
+                        size_hint: None, None
+                        size: self.minimum_size
+
+                        # 24 плейсхолдера (4x6). Текст внутри рисуется дочерним BoxLayout, а не свойством text
+                        KeyPlaceholder:
+                            id: k_0
+                            room_name: 'Помещение A1'
+                            on_release: app.controller.on_key_placeholder_press(self)
+                        KeyPlaceholder:
+                            id: k_1
+                            room_name: 'Помещение A2'
+                            on_release: app.controller.on_key_placeholder_press(self)
+                        KeyPlaceholder:
+                            id: k_2
+                            room_name: 'Помещение A3'
+                            on_release: app.controller.on_key_placeholder_press(self)
+                        KeyPlaceholder:
+                            id: k_3
+                            room_name: 'Помещение A4'
+                            on_release: app.controller.on_key_placeholder_press(self)
+                        KeyPlaceholder:
+                            id: k_4
+                            room_name: 'Помещение A5'
+                            on_release: app.controller.on_key_placeholder_press(self)
+                        KeyPlaceholder:
+                            id: k_5
+                            room_name: 'Помещение A6'
+                            on_release: app.controller.on_key_placeholder_press(self)
+                        KeyPlaceholder:
+                            id: k_6
+                            room_name: 'Помещение B1'
+                            on_release: app.controller.on_key_placeholder_press(self)
+                        KeyPlaceholder:
+                            id: k_7
+                            room_name: 'Помещение B2'
+                            on_release: app.controller.on_key_placeholder_press(self)
+                        KeyPlaceholder:
+                            id: k_8
+                            room_name: 'Помещение B3'
+                            on_release: app.controller.on_key_placeholder_press(self)
+                        KeyPlaceholder:
+                            id: k_9
+                            room_name: 'Помещение B4'
+                            on_release: app.controller.on_key_placeholder_press(self)
+                        KeyPlaceholder:
+                            id: k_10
+                            room_name: 'Помещение B5'
+                            on_release: app.controller.on_key_placeholder_press(self)
+                        KeyPlaceholder:
+                            id: k_11
+                            room_name: 'Помещение B6'
+                            on_release: app.controller.on_key_placeholder_press(self)
+                        KeyPlaceholder:
+                            id: k_12
+                            room_name: 'Помещение C1'
+                            on_release: app.controller.on_key_placeholder_press(self)
+                        KeyPlaceholder:
+                            id: k_13
+                            room_name: 'Помещение C2'
+                            on_release: app.controller.on_key_placeholder_press(self)
+                        KeyPlaceholder:
+                            id: k_14
+                            room_name: 'Помещение C3'
+                            on_release: app.controller.on_key_placeholder_press(self)
+                        KeyPlaceholder:
+                            id: k_15
+                            room_name: 'Помещение C4'
+                            on_release: app.controller.on_key_placeholder_press(self)
+                        KeyPlaceholder:
+                            id: k_16
+                            room_name: 'Помещение C5'
+                            on_release: app.controller.on_key_placeholder_press(self)
+                        KeyPlaceholder:
+                            id: k_17
+                            room_name: 'Помещение C6'
+                            on_release: app.controller.on_key_placeholder_press(self)
+                        KeyPlaceholder:
+                            id: k_18
+                            room_name: 'Помещение D1'
+                            on_release: app.controller.on_key_placeholder_press(self)
+                        KeyPlaceholder:
+                            id: k_19
+                            room_name: 'Помещение D2'
+                            on_release: app.controller.on_key_placeholder_press(self)
+                        KeyPlaceholder:
+                            id: k_20
+                            room_name: 'Помещение D3'
+                            on_release: app.controller.on_key_placeholder_press(self)
+                        KeyPlaceholder:
+                            id: k_21
+                            room_name: 'Помещение D4'
+                            on_release: app.controller.on_key_placeholder_press(self)
+                        KeyPlaceholder:
+                            id: k_22
+                            room_name: 'Помещение D5'
+                            on_release: app.controller.on_key_placeholder_press(self)
+                        KeyPlaceholder:
+                            id: k_23
+                            room_name: 'Помещение D6'
+                            on_release: app.controller.on_key_placeholder_press(self)
+
+        BoxLayout:
+            id: bottom_bar
+            size_hint_y: None
+            height: dp(56)
+            spacing: dp(12)
+
+            # Кнопки до авторизации (2 шт.)
+            BoxLayout:
+                id: pre_auth_bar
+                size_hint_x: 1
+                spacing: dp(12)
+
+                FooterButton:
+                    text: "Админ-панель"
+                    on_release: app.controller.open_admin_panel()
+                FooterButton:
+                    text: "Авторизация"
+                    on_release: app.controller.open_auth()
+
+            # Кнопки после авторизации (3 шт.) — по умолчанию скрыты
+            BoxLayout:
+                id: post_auth_bar
+                size_hint_x: None
+                width: 0
+                spacing: dp(12)
+                disabled: True
+                opacity: 0
+
+                FooterButton:
+                    text: "Админ-панель"
+                    on_release: app.controller.open_admin_panel()
+                FooterButton:
+                    text: "Просмотр выданных ключей"
+                    on_release: app.controller.view_issued_keys()
+                FooterButton:
+                    text: "Выход"
+                    on_release: app.controller.logout()
+
+
+

@@ -1,0 +1,331 @@
+# Shared admin UI — единый визуальный стиль форм, карточек и полей.
+
+# --- Базовая карточка (все панели и формы) ---
+<AdminCard@MDCard>:
+    md_bg_color: 0.18, 0.19, 0.20, 1
+    radius: [12]
+    elevation: 2
+    padding: dp(16)
+
+# --- Оболочка страницы и прокрутка ---
+<AdminPage@BoxLayout>:
+    orientation: 'vertical'
+    spacing: dp(12)
+    padding: dp(16)
+
+<AdminScrollBody@ScrollView>:
+    size_hint: 1, 1
+    do_scroll_x: False
+    do_scroll_y: True
+    bar_width: dp(6)
+    scroll_type: ['bars', 'content']
+    bar_color: 0.45, 0.47, 0.50, 0.45
+    bar_inactive_color: 0, 0, 0, 0
+
+<AdminScrollPanel@ScrollView>:
+    size_hint: 1, 1
+    do_scroll_x: True
+    do_scroll_y: True
+    bar_width: dp(6)
+    scroll_type: ['bars', 'content']
+    bar_color: 0.45, 0.47, 0.50, 0.45
+    bar_inactive_color: 0, 0, 0, 0
+
+<AdminHBoxScroll@ScrollView>:
+    size_hint_y: None
+    do_scroll_x: True
+    do_scroll_y: False
+    bar_width: dp(6)
+    scroll_type: ['bars', 'content']
+    bar_color: 0.45, 0.47, 0.50, 0.45
+    bar_inactive_color: 0, 0, 0, 0
+
+<AdminFormBody@BoxLayout>:
+    orientation: 'vertical'
+    spacing: dp(16)
+    size_hint_y: None
+    height: self.minimum_height
+    size_hint_x: 1
+
+<AdminCenteredForm@AnchorLayout>:
+    anchor_x: 'center'
+    anchor_y: 'top'
+    size_hint_y: None
+    size_hint_x: 1
+
+# --- Заголовки ---
+<AdminScreenTitle@MDLabel>:
+    text: ''
+    font_style: 'H6'
+    theme_text_color: 'Primary'
+    size_hint_y: None
+    height: dp(48)
+    halign: 'center'
+    valign: 'middle'
+    text_size: self.width, self.height
+
+<AdminScreenSubtitle@MDLabel>:
+    text: ''
+    font_style: 'Body2'
+    theme_text_color: 'Secondary'
+    size_hint_y: None
+    height: dp(28)
+    halign: 'center'
+    valign: 'middle'
+    text_size: self.width, self.height
+
+<AdminSectionTitle@MDLabel>:
+    text: ''
+    font_style: 'Subtitle1'
+    bold: True
+    theme_text_color: 'Primary'
+    size_hint_y: None
+    height: dp(32)
+    halign: 'left'
+    valign: 'middle'
+    text_size: self.width, self.height
+
+<AdminCaptionLabel@MDLabel>:
+    text: ''
+    font_style: 'Caption'
+    theme_text_color: 'Secondary'
+    size_hint_y: None
+    halign: 'left'
+    valign: 'middle'
+    text_size: self.width, None
+    height: self.texture_size[1] + dp(4)
+
+# --- Карточки ---
+<AdminFormCard@AdminCard>:
+    padding: dp(20)
+    size_hint: None, None
+
+# --- Строка label + поле ---
+<AdminFormRow@BoxLayout>:
+    orientation: 'horizontal'
+    size_hint_y: None
+    spacing: dp(12)
+    on_size:
+        self.orientation = ('vertical' if self.width < dp(420) else 'horizontal');
+        self.height = (self.minimum_height if self.orientation == 'vertical' else dp(48))
+
+<AdminFieldLabel@MDLabel>:
+    text: ''
+    font_style: 'Body2'
+    theme_text_color: 'Secondary'
+    size_hint_y: None
+    halign: 'left'
+    valign: 'middle'
+    text_size: self.width, None
+    shorten: True
+    shorten_from: 'right'
+    size_hint_x: 1 if (self.parent and getattr(self.parent, 'orientation', 'horizontal') == 'vertical') else None
+    width: (self.parent.width if (self.parent and getattr(self.parent, 'orientation', 'horizontal') == 'vertical') else min(dp(168), self.parent.width * 0.38) if self.parent else dp(168))
+    height: self.texture_size[1] + dp(4) if (self.parent and getattr(self.parent, 'orientation', 'horizontal') == 'vertical') else dp(48)
+
+# --- Поля ввода (единая высота 48dp, одинаковый фон) ---
+<AdminSpinner@Spinner>:
+    size_hint_x: 1
+    size_hint_y: None
+    height: dp(48)
+    background_normal: ''
+    background_color: 0, 0, 0, 0
+    color: 1, 1, 1, 1
+    font_size: sp(14)
+    padding: dp(12), 0
+    text_size: self.width - dp(24), self.height
+    shorten: True
+    shorten_from: 'right'
+    halign: 'left'
+    valign: 'middle'
+    canvas.before:
+        Color:
+            rgba: 0.30, 0.31, 0.32, 1
+        RoundedRectangle:
+            pos: self.x, self.y + dp(2)
+            size: self.width, self.height - dp(2)
+            radius: [10]
+
+<AdminTextField@MDTextField>:
+    size_hint_x: 1
+    size_hint_y: None
+    height: dp(48)
+    mode: 'fill'
+    fill_color: 0.30, 0.31, 0.32, 1
+    text_color: 1, 1, 1, 1
+    hint_text_color: 0.60, 0.62, 0.68, 1
+    line_color_normal: 0, 0, 0, 0
+    line_color_focus: 0, 0, 0, 0
+    font_size: sp(14)
+    padding: dp(12), dp(12)
+
+<AdminCompactTextField@AdminTextField>:
+    size_hint_x: None
+    width: dp(140)
+
+# Лёгкое поле-фильтр на чистом TextInput (без багов отрисовки MDTextField fill)
+<AdminFilterInput@TextInput>:
+    size_hint_x: None
+    size_hint_y: None
+    height: dp(40)
+    width: dp(140)
+    multiline: False
+    write_tab: False
+    background_normal: ''
+    background_active: ''
+    background_disabled_normal: ''
+    background_color: 0.30, 0.31, 0.32, 1
+    foreground_color: 1, 1, 1, 1
+    cursor_color: 1, 1, 1, 1
+    hint_text_color: 0.62, 0.64, 0.70, 1
+    selection_color: 0.30, 0.45, 0.70, 0.5
+    font_size: sp(14)
+    padding: [dp(10), max(0, (self.height - self.line_height) / 2.0)]
+
+<AdminDateSpinner@AdminSpinner>:
+    size_hint_x: None
+    width: dp(92)
+    padding: dp(6), 0
+    halign: 'center'
+    text_size: self.width - dp(12), self.height
+
+<AdminDateLabel@AdminFieldLabel>:
+    size_hint_x: None
+    width: dp(32)
+    height: dp(48)
+
+<AdminDateRow@BoxLayout>:
+    size_hint_y: None
+    height: dp(48)
+    spacing: dp(8)
+
+<AdminFilterBar@AdminCard>:
+    size_hint_y: None
+    height: dp(64)
+    padding: dp(10), dp(10)
+
+<AdminFormGrid@GridLayout>:
+    cols: 2
+    spacing: dp(12)
+    row_default_height: dp(48)
+    row_force_default: True
+    size_hint_y: None
+    height: self.minimum_height
+    size_hint_x: 1
+
+<AdminFormGridLabel@AdminFieldLabel>:
+    size_hint_x: None
+    width: dp(168)
+
+<AdminStatusLabel@AdminCaptionLabel>:
+    text: ''
+
+<AdminFormDivider@MDSeparator>:
+    size_hint_y: None
+    height: dp(1)
+    color: 0.35, 0.36, 0.38, 1
+
+# --- Кнопки ---
+<AdminFormBackButton@OutlinedButton>:
+    size_hint_x: 1
+    height: dp(48)
+    text: 'Назад'
+
+<AdminFormSubmitButton@PrimaryButton>:
+    size_hint_x: 1
+    height: dp(48)
+
+<AdminFormDangerButton@DangerButton>:
+    size_hint_x: 1
+    height: dp(48)
+
+<AdminFormGhostButton@SecondaryButton>:
+    size_hint_x: 1
+    height: dp(48)
+
+<AdminFormSectionButton@PrimaryButton>:
+    size_hint_x: 1
+    height: dp(48)
+
+<AdminPagerButton@SecondaryButton>:
+    size_hint_x: None
+    width: dp(48)
+    height: dp(48)
+    font_size: sp(18)
+
+<AdminPageLabel@MDLabel>:
+    text: ''
+    font_style: 'Body2'
+    theme_text_color: 'Secondary'
+    size_hint_x: None
+    width: dp(108)
+    height: dp(48)
+    halign: 'center'
+    valign: 'middle'
+    text_size: self.size
+
+<AdminPager@BoxLayout>:
+    orientation: 'horizontal'
+    size_hint_x: None
+    width: self.minimum_width
+    height: dp(48)
+    spacing: dp(8)
+
+<AdminActionsFooter@GridLayout>:
+    size_hint_y: None
+    spacing: dp(8)
+    padding: dp(4), 0, 0, 0
+    on_size:
+        self.cols = (1 if self.width < dp(360) else (2 if self.width < dp(640) else min(max(len(self.children), 1), 4)));
+        self.height = (max(1, (len(self.children) + self.cols - 1) // self.cols) * (dp(48) + dp(8)) - dp(8)) if self.children else dp(48)
+
+<AdminFooterBar@AdminHBoxScroll>:
+    height: dp(56)
+
+# --- Таблица (единый тёмный стиль, выровнена с фильтрами) ---
+<AdminTableRow@BoxLayout>:
+    orientation: 'horizontal'
+    bg: 0, 0, 0, 0
+    size_hint_y: None
+    height: dp(40)
+    canvas.before:
+        Color:
+            rgba: self.bg
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+<AdminTableCell@BoxLayout>:
+    text: ''
+    align: 'left'
+    color_rgba: 0.90, 0.92, 0.95, 1
+    bold_text: False
+    size_hint_x: None
+    size_hint_y: 1
+    padding: dp(10), 0
+    MDLabel:
+        text: root.text
+        font_style: 'Caption'
+        bold: root.bold_text
+        theme_text_color: 'Custom'
+        text_color: root.color_rgba
+        halign: root.align
+        valign: 'middle'
+        text_size: self.size
+        shorten: True
+        shorten_from: 'right'
+
+<AdminImageSlider@Slider>:
+    size_hint_x: 1
+    cursor_size: dp(18), dp(18)
+    canvas.before:
+        Color:
+            rgba: 0.30, 0.31, 0.32, 1
+        RoundedRectangle:
+            pos: self.x, self.center_y - dp(3)
+            size: self.width, dp(6)
+            radius: [3]
+
+# Гибкая панель-карточка (тянется по доступному месту)
+<AdminPanelCard@AdminCard>:
+    size_hint: 1, 1
