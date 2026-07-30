@@ -4,6 +4,9 @@
 
 > Публичная демо-версия для портфолио. Продакшен-конфиги, проприетарный контроллер шкафа и клиентские данные не включены.
 
+**В портфолио показывает:** end-to-end продукт (UI + PostgreSQL + TCP/RFID + Docker/PyInstaller), а не учебный CRUD.  
+Другие публичные кейсы: [llm-agent-gateway](https://github.com/0ver1ay/llm-agent-gateway) · [PatientMonitor-Demo](https://github.com/0ver1ay/PatientMonitor-Demo) · [профиль](https://github.com/0ver1ay)
+
 ---
 
 ## Возможности
