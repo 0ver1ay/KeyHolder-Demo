@@ -545,7 +545,7 @@ USER_SECTIONS = [
 ADMIN_IMAGES = {
     "menu": "menu.jpg",
     "add_user": "создать пользователя.jpg",
-    "permissions": "выдача привелегий.jpg",
+    "permissions": "выдача привилегий.jpg",
     "delete_user": "удалить пользователя.jpg",
     "add_room": "создать помещение-ключ.jpg",
     "add_box": "создать бокс.jpg",
